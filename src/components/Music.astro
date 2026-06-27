@@ -4,20 +4,21 @@ import { t } from '../i18n/translations';
 
 const lang = Astro.currentLocale ?? 'en';
 const tr   = t(lang).music;
+const b    = import.meta.env.BASE_URL;
 
 const releases = [
   {
     type:  'EP',
     title: 'Nightbloom',
     year:  '2025',
-    bg:    'url(/cover-nightbloom.jpg) center/cover no-repeat',
+    bg:    `url(${b}cover-nightbloom.jpg) center/cover no-repeat`,
     href:  'https://open.spotify.com/album/0XABQuy377lNs2bN9oEUxo',
   },
   {
     type:  'Album',
     title: 'The Process',
     year:  '2023',
-    bg:    'url(/cover-theprocess.jpg) center/cover no-repeat',
+    bg:    `url(${b}cover-theprocess.jpg) center/cover no-repeat`,
     href:  'https://open.spotify.com/album/6414eOcIBPAufyvqFqNWhU',
   },
 ] as const;
