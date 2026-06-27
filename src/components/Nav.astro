@@ -1,0 +1,106 @@
+---
+import { t } from '../i18n/translations';
+
+const lang = Astro.currentLocale ?? 'en';
+const tr   = t(lang);
+---
+
+<nav
+  id="navbar"
+  class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-16 py-5 transition-all duration-300"
+>
+  <a href="#hero" class="font-heading text-[1.8rem] tracking-[0.08em] text-white no-underline">
+    POLY<span class="text-brand">G</span>RAPH
+  </a>
+
+  <ul class="hidden md:flex gap-10 list-none m-0 p-0">
+    {tr.nav.links.map(({ href, label }) => (
+      <li>
+        <a
+          href={href}
+          class="text-dim font-mono text-[0.72rem] tracking-[0.15em] uppercase hover:text-brand transition-colors duration-200 no-underline"
+        >
+          {label}
+        </a>
+      </li>
+    ))}
+  </ul>
+
+  <div class="hidden md:flex items-center gap-4">
+    <!-- Language switcher -->
+    <a
+      href={tr.nav.langUrl}
+      class="font-mono text-[0.65rem] tracking-widest uppercase text-dim border border-dim px-2 py-1 no-underline hover:text-brand hover:border-brand transition-all duration-200"
+      aria-label={`Switch to ${tr.nav.langSwitch}`}
+    >
+      {tr.nav.langSwitch}
+    </a>
+    <a
+      href="#contact"
+      class="font-mono text-[0.7rem] tracking-[0.1em] uppercase text-brand border border-brand px-5 py-2 no-underline hover:bg-brand hover:text-black transition-all duration-200"
+    >
+      {tr.nav.book}
+    </a>
+  </div>
+
+  <button
+    id="hamburger"
+    class="flex md:hidden flex-col gap-[5px] bg-transparent border-0 p-1 cursor-pointer"
+    aria-label="Open menu"
+  >
+    <span class="block w-6 h-[2px] bg-white"></span>
+    <span class="block w-6 h-[2px] bg-white"></span>
+    <span class="block w-6 h-[2px] bg-white"></span>
+  </button>
+</nav>
+
+<!-- Mobile overlay -->
+<div
+  id="mobile-menu"
+  class="hidden fixed inset-0 bg-[rgba(8,8,8,0.98)] z-40 flex-col items-center justify-center gap-10"
+>
+  <button
+    id="mobile-close"
+    class="absolute top-6 right-8 bg-transparent border-0 text-dim text-3xl leading-none cursor-pointer hover:text-white transition-colors"
+  >
+    ✕
+  </button>
+
+  {tr.nav.links.map(({ href, label }) => (
+    <a
+      href={href}
+      class="mobile-link font-heading text-[3.5rem] tracking-[0.05em] text-white no-underline hover:text-brand transition-colors duration-200"
+    >
+      {label}
+    </a>
+  ))}
+
+  <!-- Lang switcher in mobile menu -->
+  <a
+    href={tr.nav.langUrl}
+    class="mobile-link font-mono text-[0.8rem] tracking-widest uppercase text-dim border border-dim px-4 py-2 no-underline hover:text-brand hover:border-brand transition-all mt-2"
+  >
+    {tr.nav.langSwitch}
+  </a>
+</div>
+
+<script>
+  const navbar      = document.getElementById('navbar')!;
+  const hamburger   = document.getElementById('hamburger')!;
+  const mobileMenu  = document.getElementById('mobile-menu')!;
+  const mobileClose = document.getElementById('mobile-close')!;
+
+  window.addEventListener('scroll', () => {
+    const s = window.scrollY > 50;
+    navbar.style.background     = s ? 'rgba(8,8,8,0.96)' : '';
+    navbar.style.backdropFilter = s ? 'blur(12px)' : '';
+    navbar.style.borderBottom   = s ? '1px solid #222' : '';
+  }, { passive: true });
+
+  const openMenu  = () => { mobileMenu.classList.remove('hidden'); mobileMenu.classList.add('flex'); };
+  const closeMenu = () => { mobileMenu.classList.remove('flex'); mobileMenu.classList.add('hidden'); };
+
+  hamburger.addEventListener('click', openMenu);
+  mobileClose.addEventListener('click', closeMenu);
+  document.querySelectorAll('.mobile-link').forEach(a => a.addEventListener('click', closeMenu));
+</script>

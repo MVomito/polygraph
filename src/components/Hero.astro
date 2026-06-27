@@ -1,0 +1,55 @@
+---
+import { t } from '../i18n/translations';
+
+const lang = Astro.currentLocale ?? 'en';
+const tr   = t(lang).hero;
+---
+<section
+  id="hero"
+  class="relative min-h-screen flex flex-col items-center justify-center text-center overflow-hidden px-6"
+>
+  <!-- Grid bg -->
+  <div
+    class="absolute inset-0 pointer-events-none"
+    style="background-image: linear-gradient(rgba(255,20,147,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(57,255,20,0.03) 1px, transparent 1px); background-size: 80px 80px;"
+  ></div>
+
+  <!-- Radial glow -->
+  <div
+    class="absolute rounded-full pointer-events-none"
+    style="width:700px; height:700px; background: radial-gradient(circle, rgba(255,20,147,0.12) 0%, rgba(57,255,20,0.04) 60%, transparent 75%); top:50%; left:50%; transform:translate(-50%,-50%);"
+  ></div>
+
+  <p class="relative font-mono text-[0.7rem] tracking-[0.35em] uppercase text-brand mb-6">
+    <span class="opacity-40">—</span>&ensp;{tr.label}&ensp;<span class="opacity-40">—</span>
+  </p>
+
+  <h1
+    class="glitch relative font-heading leading-[0.9] tracking-[0.02em]"
+    style="font-size: clamp(5.5rem, 17vw, 17rem);"
+    data-text="POLYGRAPH"
+  >
+    POLYGRAPH
+  </h1>
+
+  <p
+    class="relative font-mono uppercase text-dim mt-8 mb-12"
+    style="font-size: clamp(0.6rem, 1.4vw, 0.82rem); letter-spacing: 0.35em;"
+  >
+    {tr.tagline}
+  </p>
+
+  <div class="relative flex flex-wrap gap-6 justify-center">
+    <a href="#music" class="btn-primary">{tr.listenNow}</a>
+    <a href="#contact" class="btn-outline">{tr.bookShow}</a>
+  </div>
+
+  <!-- Scroll cue -->
+  <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
+    <span class="font-mono text-[0.58rem] tracking-[0.25em] uppercase text-dim opacity-40">{tr.scroll}</span>
+    <div
+      class="w-px h-12"
+      style="background: linear-gradient(to bottom, #ff1493, transparent); animation: scroll-pulse 2s ease-in-out infinite;"
+    ></div>
+  </div>
+</section>

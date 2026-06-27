@@ -1,0 +1,55 @@
+---
+import SectionLabel from './SectionLabel.astro';
+import { t } from '../i18n/translations';
+
+const lang = Astro.currentLocale ?? 'en';
+const tr   = t(lang).music;
+
+const releases = [
+  {
+    type:  'EP',
+    title: 'Nightbloom',
+    year:  '2025',
+    bg:    'linear-gradient(135deg, #0d001a 0%, #2d0050 55%, #050505 100%)',
+    href:  'https://open.spotify.com/album/0XABQuy377lNs2bN9oEUxo',
+  },
+  {
+    type:  'Album',
+    title: 'The Process',
+    year:  '2023',
+    bg:    'linear-gradient(135deg, #0d0d0d 0%, #2a0000 60%, #050505 100%)',
+    href:  'https://open.spotify.com/album/6414eOcIBPAufyvqFqNWhU',
+  },
+] as const;
+---
+<section id="music" class="bg-surface">
+  <div class="max-w-6xl mx-auto px-6 md:px-16 py-28 reveal">
+    <SectionLabel label={tr.sectionLabel} />
+    <h2 class="font-heading leading-none tracking-[0.02em]" style="font-size: clamp(2.8rem, 5.5vw, 4.8rem);">
+      {tr.heading}
+    </h2>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-[2px] mt-12">
+      {releases.map(({ type, title, year, bg, href }) => (
+        <a href={href} target="_blank" rel="noopener noreferrer" class="release-card block relative overflow-hidden" style="aspect-ratio: 1;">
+          <div class="release-bg absolute inset-0 transition-transform duration-500" style={`background: ${bg};`}></div>
+          <div class="absolute inset-0" style="background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.2) 50%, transparent 100%); z-index:1;"></div>
+          <div class="absolute inset-0 flex items-center justify-center font-heading text-white opacity-[0.08] pointer-events-none" style="font-size:7rem; letter-spacing:-0.05em; z-index:1;">PG</div>
+          <div class="play-btn absolute rounded-full flex items-center justify-center" style="top:50%; left:50%; transform:translate(-50%,-50%); width:58px; height:58px; border:1px solid rgba(255,255,255,0.25); opacity:0; transition:opacity 0.25s; z-index:2;">
+            <svg viewBox="0 0 24 24" style="fill:white; width:18px; height:18px; margin-left:3px;"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+          <div class="absolute bottom-0 left-0 right-0 p-6" style="z-index:2;">
+            <div class="font-mono text-[0.55rem] tracking-[0.2em] uppercase text-brand mb-1">{type}</div>
+            <div class="font-heading text-[2rem] leading-none tracking-[0.03em]">{title}</div>
+            <div class="font-mono text-[0.58rem] text-dim mt-1">{year}</div>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .release-card:hover .play-btn { opacity: 1 !important; }
+  .release-card:hover .release-bg { transform: scale(1.06); }
+</style>

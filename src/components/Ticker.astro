@@ -1,0 +1,13 @@
+---
+import { t } from '../i18n/translations';
+
+const lang = Astro.currentLocale ?? 'en';
+const seg  = t(lang).ticker;
+const half = seg.repeat(4);
+---
+<div class="overflow-hidden bg-accent py-3" aria-hidden="true">
+  <div class="ticker-track">
+    <span class="font-heading text-black text-xl tracking-[0.12em] shrink-0">{half}</span>
+    <span class="font-heading text-black text-xl tracking-[0.12em] shrink-0">{half}</span>
+  </div>
+</div>

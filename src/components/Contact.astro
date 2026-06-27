@@ -1,0 +1,91 @@
+---
+import SectionLabel from './SectionLabel.astro';
+import { t } from '../i18n/translations';
+
+const lang = Astro.currentLocale ?? 'en';
+const tr   = t(lang).contact;
+---
+<section id="contact" class="border-t border-edge">
+  <div class="max-w-6xl mx-auto px-6 md:px-16 py-28 reveal">
+    <SectionLabel label={tr.sectionLabel} />
+    <h2 class="font-heading leading-none tracking-[0.02em]" style="font-size: clamp(2.8rem, 5.5vw, 4.8rem);">
+      {tr.heading[0]}<br />{tr.heading[1]}
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24 mt-12">
+      <!-- Info -->
+      <div>
+        <h3 class="font-heading text-[2rem] mb-3">{tr.lede}</h3>
+        <p class="text-dim leading-[1.8] mb-8 text-[0.95rem]">{tr.body}</p>
+        <div class="flex flex-col gap-3">
+          {tr.items.map(({ label, value }) => (
+            <div class="px-4 py-3 bg-surface border border-edge" style="border-left: 2px solid #ff1493;">
+              <div class="font-mono text-[0.57rem] tracking-[0.15em] uppercase text-dim">{label}</div>
+              <div class="text-[0.9rem] mt-[2px]">{value}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Form — add data-netlify="true" and name="contact" to wire up Netlify Forms -->
+      <form id="contact-form" class="flex flex-col gap-5">
+        <div class="grid grid-cols-2 gap-4">
+          <div class="flex flex-col gap-2">
+            <label class="font-mono text-[0.58rem] tracking-[0.15em] uppercase text-dim" for="fname">{tr.form.name}</label>
+            <input id="fname" type="text" placeholder={tr.form.namePH} required
+              class="bg-surface border border-edge text-white px-4 py-3 text-[0.9rem] focus:border-brand transition-colors duration-200" />
+          </div>
+          <div class="flex flex-col gap-2">
+            <label class="font-mono text-[0.58rem] tracking-[0.15em] uppercase text-dim" for="femail">{tr.form.email}</label>
+            <input id="femail" type="email" placeholder={tr.form.emailPH} required
+              class="bg-surface border border-edge text-white px-4 py-3 text-[0.9rem] focus:border-brand transition-colors duration-200" />
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <label class="font-mono text-[0.58rem] tracking-[0.15em] uppercase text-dim" for="ftype">{tr.form.type}</label>
+          <select id="ftype" class="bg-surface border border-edge text-white px-4 py-3 text-[0.9rem] focus:border-brand transition-colors duration-200 cursor-pointer">
+            <option value="">{tr.form.typeDefault}</option>
+            {tr.form.typeOptions.map(opt => <option>{opt}</option>)}
+          </select>
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <label class="font-mono text-[0.58rem] tracking-[0.15em] uppercase text-dim" for="fmsg">{tr.form.message}</label>
+          <textarea id="fmsg" placeholder={tr.form.messagePH} style="min-height:120px; resize:vertical;"
+            class="bg-surface border border-edge text-white px-4 py-3 text-[0.9rem] focus:border-brand transition-colors duration-200"></textarea>
+        </div>
+
+        <button
+          type="submit"
+          id="submit-btn"
+          class="btn-primary w-full mt-1"
+          data-submit={tr.form.submit}
+          data-sent={tr.form.sent}
+        >
+          {tr.form.submit}
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement;
+  const btn  = document.getElementById('submit-btn') as HTMLButtonElement;
+
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const sentText   = btn.dataset.sent ?? 'Sent ✓';
+    const submitText = btn.dataset.submit ?? 'Submit';
+    btn.textContent  = sentText;
+    btn.style.background = '#2a9e58';
+    btn.disabled = true;
+    setTimeout(() => {
+      btn.textContent = submitText;
+      btn.style.background = '';
+      btn.disabled = false;
+      form.reset();
+    }, 3500);
+  });
+</script>
