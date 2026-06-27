@@ -8,14 +8,12 @@ const tr   = t(lang).hero;
   id="hero"
   class="relative min-h-screen flex flex-col items-center justify-center text-center overflow-hidden px-6"
 >
-  <!-- Photo bg -->
-  <img
-    src="/hero-bg.jpg"
-    alt=""
-    aria-hidden="true"
-    class="absolute inset-0 w-full h-full object-cover object-center pointer-events-none"
-    style="z-index:0;"
-  />
+  <!-- Slideshow bg -->
+  <div class="absolute inset-0 pointer-events-none" style="z-index:0;" aria-hidden="true">
+    <img src="/hero-bg.jpg"   alt="" class="hero-slide absolute inset-0 w-full h-full object-cover object-center" style="opacity:1;  transition:opacity 0.9s ease-in-out;" />
+    <img src="/hero-bg-2.jpg" alt="" class="hero-slide absolute inset-0 w-full h-full object-cover object-center" style="opacity:0;  transition:opacity 0.9s ease-in-out;" />
+    <img src="/hero-bg-3.jpg" alt="" class="hero-slide absolute inset-0 w-full h-full object-cover object-center" style="opacity:0;  transition:opacity 0.9s ease-in-out;" />
+  </div>
   <!-- Dark overlay -->
   <div class="absolute inset-0 pointer-events-none" style="background: rgba(0,0,0,0.62); z-index:1;"></div>
 
@@ -64,3 +62,13 @@ const tr   = t(lang).hero;
     ></div>
   </div>
 </section>
+
+<script>
+  const slides = Array.from(document.querySelectorAll<HTMLElement>('.hero-slide'));
+  let current = 0;
+  setInterval(() => {
+    slides[current].style.opacity = '0';
+    current = (current + 1) % slides.length;
+    slides[current].style.opacity = '1';
+  }, 2000);
+</script>
