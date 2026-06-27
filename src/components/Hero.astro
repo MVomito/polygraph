@@ -10,9 +10,12 @@ const tr   = t(lang).hero;
 >
   <!-- Slideshow bg -->
   <div class="absolute inset-0 pointer-events-none" style="z-index:0;" aria-hidden="true">
-    <img src="/hero-bg.jpg"   alt="" class="hero-slide absolute inset-0 w-full h-full object-cover object-center" style="opacity:1;  transition:opacity 0.9s ease-in-out;" />
-    <img src="/hero-bg-2.jpg" alt="" class="hero-slide absolute inset-0 w-full h-full object-cover object-center" style="opacity:0;  transition:opacity 0.9s ease-in-out;" />
-    <img src="/hero-bg-3.jpg" alt="" class="hero-slide absolute inset-0 w-full h-full object-cover object-center" style="opacity:0;  transition:opacity 0.9s ease-in-out;" />
+    <img src="/hero-bg.jpg"   alt="" class="hero-slide absolute inset-0 w-full h-full object-cover object-center" style="opacity:1; transition:opacity 0.9s ease-in-out;" />
+<img src="/hero-bg-4.jpg" alt="" class="hero-slide absolute inset-0 w-full h-full object-cover" style="opacity:0; transition:opacity 0.9s ease-in-out; object-position: center 25%;" />
+    <img src="/hero-bg-5.jpg" alt="" class="hero-slide absolute inset-0 w-full h-full object-cover object-center" style="opacity:0; transition:opacity 0.9s ease-in-out;" />
+    <img src="/hero-bg-6.jpg" alt="" class="hero-slide absolute inset-0 w-full h-full object-cover object-center" style="opacity:0; transition:opacity 0.9s ease-in-out;" />
+    <img src="/hero-bg-7.jpg" alt="" class="hero-slide absolute inset-0 w-full h-full object-cover object-center" style="opacity:0; transition:opacity 0.9s ease-in-out;" />
+    <img src="/hero-bg-8.jpg" alt="" class="hero-slide absolute inset-0 w-full h-full object-cover object-center" style="opacity:0; transition:opacity 0.9s ease-in-out;" />
   </div>
   <!-- Dark overlay -->
   <div class="absolute inset-0 pointer-events-none" style="background: rgba(0,0,0,0.62); z-index:1;"></div>
@@ -70,5 +73,5 @@ const tr   = t(lang).hero;
     slides[current].style.opacity = '0';
     current = (current + 1) % slides.length;
     slides[current].style.opacity = '1';
-  }, 2000);
+  }, 4000);
 </script>
