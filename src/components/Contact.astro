@@ -27,24 +27,29 @@ const tr   = t(lang).contact;
         </div>
       </div>
 
-      <!-- Form — add data-netlify="true" and name="contact" to wire up Netlify Forms -->
-      <form id="contact-form" class="flex flex-col gap-5">
+      <!-- Form — Formspree backend -->
+      <form
+        id="contact-form"
+        action="https://formsubmit.co/millercoreagency@gmail.com"
+        method="POST"
+        class="flex flex-col gap-5"
+      >
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div class="flex flex-col gap-2">
             <label class="font-mono text-[0.58rem] tracking-[0.15em] uppercase text-dim" for="fname">{tr.form.name}</label>
-            <input id="fname" type="text" placeholder={tr.form.namePH} required
+            <input id="fname" name="name" type="text" placeholder={tr.form.namePH} required
               class="bg-surface border border-edge text-white px-4 py-3 text-[0.9rem] focus:border-brand transition-colors duration-200" />
           </div>
           <div class="flex flex-col gap-2">
             <label class="font-mono text-[0.58rem] tracking-[0.15em] uppercase text-dim" for="femail">{tr.form.email}</label>
-            <input id="femail" type="email" placeholder={tr.form.emailPH} required
+            <input id="femail" name="email" type="email" placeholder={tr.form.emailPH} required
               class="bg-surface border border-edge text-white px-4 py-3 text-[0.9rem] focus:border-brand transition-colors duration-200" />
           </div>
         </div>
 
         <div class="flex flex-col gap-2">
           <label class="font-mono text-[0.58rem] tracking-[0.15em] uppercase text-dim" for="ftype">{tr.form.type}</label>
-          <select id="ftype" class="bg-surface border border-edge text-white px-4 py-3 text-[0.9rem] focus:border-brand transition-colors duration-200 cursor-pointer">
+          <select id="ftype" name="type" class="bg-surface border border-edge text-white px-4 py-3 text-[0.9rem] focus:border-brand transition-colors duration-200 cursor-pointer">
             <option value="">{tr.form.typeDefault}</option>
             {tr.form.typeOptions.map(opt => <option>{opt}</option>)}
           </select>
@@ -52,40 +57,59 @@ const tr   = t(lang).contact;
 
         <div class="flex flex-col gap-2">
           <label class="font-mono text-[0.58rem] tracking-[0.15em] uppercase text-dim" for="fmsg">{tr.form.message}</label>
-          <textarea id="fmsg" placeholder={tr.form.messagePH} style="min-height:120px; resize:vertical;"
+          <textarea id="fmsg" name="message" placeholder={tr.form.messagePH} style="min-height:120px; resize:vertical;"
             class="bg-surface border border-edge text-white px-4 py-3 text-[0.9rem] focus:border-brand transition-colors duration-200"></textarea>
         </div>
+
+        <!-- Formsubmit config -->
+        <input type="hidden" name="_captcha" value="false" />
+        <input type="hidden" name="_subject" value="New booking inquiry — Polygraph" />
+        <input type="text" name="_honey" style="display:none" />
 
         <button
           type="submit"
           id="submit-btn"
           class="btn-primary w-full mt-1"
-          data-submit={tr.form.submit}
-          data-sent={tr.form.sent}
         >
           {tr.form.submit}
         </button>
+
+        <p id="form-status" class="font-mono text-[0.65rem] tracking-[0.1em] text-center hidden"></p>
       </form>
     </div>
   </div>
 </section>
 
 <script>
-  const form = document.getElementById('contact-form') as HTMLFormElement;
-  const btn  = document.getElementById('submit-btn') as HTMLButtonElement;
+  const form   = document.getElementById('contact-form') as HTMLFormElement;
+  const btn    = document.getElementById('submit-btn') as HTMLButtonElement;
+  const status = document.getElementById('form-status') as HTMLParagraphElement;
 
-  form?.addEventListener('submit', (e) => {
+  form?.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const sentText   = btn.dataset.sent ?? 'Sent ✓';
-    const submitText = btn.dataset.submit ?? 'Submit';
-    btn.textContent  = sentText;
-    btn.style.background = '#2a9e58';
     btn.disabled = true;
-    setTimeout(() => {
-      btn.textContent = submitText;
-      btn.style.background = '';
-      btn.disabled = false;
+    btn.textContent = '...';
+
+    const res = await fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { Accept: 'application/json' },
+    });
+
+    if (res.ok) {
+      btn.textContent = 'Message Sent ✓';
+      btn.style.background = '#2a9e58';
+      status.textContent = 'We\'ll get back to you shortly.';
+      status.style.color = '#39ff14';
+      status.classList.remove('hidden');
       form.reset();
-    }, 3500);
+    } else {
+      btn.textContent = 'Error — try again';
+      btn.style.background = '#c0392b';
+      btn.disabled = false;
+      status.textContent = 'Something went wrong. Email us directly at millercoreagency@gmail.com';
+      status.style.color = '#ff1493';
+      status.classList.remove('hidden');
+    }
   });
 </script>
