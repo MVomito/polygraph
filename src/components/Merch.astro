@@ -4,41 +4,91 @@ import { t } from '../i18n/translations';
 
 const lang = Astro.currentLocale ?? 'en';
 const tr   = t(lang).merch;
----
-<section id="merch" class="border-t border-edge">
-  <div class="max-w-6xl mx-auto px-6 md:px-16 py-28 reveal">
-    <SectionLabel label={tr.sectionLabel} />
-    <h2 class="font-heading leading-none tracking-[0.02em]" style="font-size: clamp(2.8rem, 5.5vw, 4.8rem);">
-      {tr.heading}
-    </h2>
 
-    <div class="relative mt-12 bg-surface border border-edge overflow-hidden flex flex-col md:flex-row items-start md:items-center justify-between gap-8 p-10 md:p-16">
-      <div
-        class="absolute font-heading text-white pointer-events-none select-none"
-        style="right:-2rem; top:50%; transform:translateY(-50%); font-size:14rem; opacity:0.02; line-height:1; white-space:nowrap; letter-spacing:-0.02em;"
-        aria-hidden="true"
-      >
-        MERCH
+const items = [
+  { cat: 'TEE',       label: 'T-Shirt',   detail: '3 Designs',   wide: false },
+  { cat: 'CAMISOLE',  label: 'Camisole',  detail: '',            wide: false },
+  { cat: 'CAP',       label: lang === 'fr' ? 'Casquette' : 'Cap',    detail: '', wide: false },
+  { cat: 'MUSIC',     label: 'Album',     detail: 'The Process', wide: false },
+  { cat: 'MISC',      label: 'Stickers',  detail: 'Pack',        wide: false },
+];
+---
+<section id="merch" class="border-t border-edge overflow-hidden">
+
+  <!-- Hazard stripe top bar -->
+  <div class="h-[3px] w-full" style="background: repeating-linear-gradient(-45deg, #ff1493, #ff1493 8px, #080808 8px, #080808 18px);"></div>
+
+  <div class="max-w-6xl mx-auto px-6 md:px-16 py-24 reveal">
+    <div class="flex items-start justify-between flex-wrap gap-4 mb-16">
+      <div>
+        <SectionLabel label={tr.sectionLabel} />
+        <h2 class="font-heading leading-none tracking-[0.02em]" style="font-size: clamp(2.8rem, 5.5vw, 4.8rem);">
+          {tr.heading}
+        </h2>
       </div>
+      <!-- Status badge -->
+      <div class="flex items-center gap-2 mt-2">
+        <span class="block w-2 h-2 rounded-full bg-brand" style="animation: pulse-dot 1.5s ease-in-out infinite;"></span>
+        <span class="font-mono text-[0.6rem] tracking-[0.25em] uppercase text-brand">{tr.shopNow}</span>
+      </div>
+    </div>
+
+    <!-- Product cards -->
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-[2px] mb-16">
+      {items.map(({ cat, label, detail, wide }) => (
+        <div
+          class={`merch-card group relative overflow-hidden bg-surface border border-edge ${wide ? 'col-span-2 md:col-span-2' : ''}`}
+          style="aspect-ratio: 3/4;"
+        >
+          <!-- Centered REDACTED stamp -->
+          <div class="absolute inset-0 flex items-center justify-center">
+            <div class="border-2 border-white/10 px-6 py-3 rotate-[-8deg] opacity-20 group-hover:opacity-40 transition-opacity duration-300">
+              <span class="font-heading text-[2rem] tracking-[0.15em] text-white">CLASSIFIED</span>
+            </div>
+          </div>
+
+          <!-- Corner category tag -->
+          <div class="absolute top-4 left-4 flex items-center gap-2">
+            <span class="font-mono text-[0.52rem] tracking-[0.25em] uppercase text-brand/60 group-hover:text-brand transition-colors duration-200">{cat}</span>
+            {detail && <span class="font-mono text-[0.45rem] tracking-[0.15em] uppercase text-white/20">· {detail}</span>}
+          </div>
+
+          <!-- Bottom label -->
+          <div class="absolute bottom-0 left-0 right-0 p-5 border-t border-edge/50">
+            <div class="font-heading text-[1.6rem] leading-none tracking-[0.05em] text-white/30 group-hover:text-white/70 transition-colors duration-300">{label}</div>
+          </div>
+
+          <!-- Hover glow -->
+          <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style="background: linear-gradient(135deg, rgba(255,20,147,0.06) 0%, transparent 60%);"></div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Bottom CTA bar -->
+    <div class="relative border border-edge p-8 md:p-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 overflow-hidden">
+      <!-- BG text -->
+      <div class="absolute right-0 top-1/2 -translate-y-1/2 font-heading text-white pointer-events-none select-none opacity-[0.025]" style="font-size: 9rem; line-height: 1; white-space: nowrap;" aria-hidden="true">DROP</div>
 
       <div class="relative">
-        <h3 class="font-heading text-[3rem] leading-none mb-2">{tr.dropHeading}</h3>
-        <p class="text-dim text-[0.92rem] leading-[1.7] max-w-sm">{tr.dropBody}</p>
-        <span class="btn-primary mt-6 inline-block opacity-50 cursor-not-allowed select-none">{tr.shopNow}</span>
+        <p class="font-mono text-[0.6rem] tracking-[0.2em] uppercase text-brand mb-2">{tr.dropHeading}</p>
+        <p class="text-dim text-[0.9rem] leading-[1.7] max-w-md">{tr.dropBody}</p>
       </div>
 
-      <div class="relative flex gap-4 flex-wrap">
-        {['👕', '🧢', '🖤'].map(icon => (
-          <div class="merch-icon w-24 h-24 bg-raised border border-edge flex items-center justify-center text-[2.2rem]">
-            {icon}
-          </div>
-        ))}
+      <div class="relative shrink-0">
+        <span class="btn-primary opacity-50 cursor-not-allowed select-none inline-block">{tr.shopNow}</span>
       </div>
     </div>
   </div>
+
+  <!-- Hazard stripe bottom bar -->
+  <div class="h-[3px] w-full" style="background: repeating-linear-gradient(-45deg, #ff1493, #ff1493 8px, #080808 8px, #080808 18px);"></div>
 </section>
 
 <style>
-  .merch-icon { transition: border-color 0.2s; }
-  .merch-icon:hover { border-color: var(--color-brand); }
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.4; transform: scale(0.7); }
+  }
+  .merch-card { transition: border-color 0.2s; }
+  .merch-card:hover { border-color: rgba(255,20,147,0.3); }
 </style>

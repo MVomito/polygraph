@@ -1,0 +1,183 @@
+---
+import SectionLabel from './SectionLabel.astro';
+
+const lang = Astro.currentLocale ?? 'en';
+
+const videos = [
+  { id: 'yZXJjj6Jmu8', title: 'Strangers',    tag: 'Latest Release'       },
+  { id: 'niwcWtOIGtU', title: 'Aconite',      tag: 'Nightbloom EP · 2025' },
+  { id: 'QEBw87JCY8U', title: 'On The Edge',  tag: 'Polygraph'            },
+  { id: 'Ydu0emn7E8s', title: 'The Hopeless', tag: 'Polygraph'            },
+  { id: 'V5YZe7jvNdU', title: 'Impress Me',   tag: 'Single · 2021'       },
+];
+
+const [featured, ...rest] = videos;
+const labelText = lang === 'fr' ? 'Visuels' : 'Visuals';
+const heading   = lang === 'fr' ? 'Vidéos'  : 'Videos';
+---
+
+<section id="videos" class="border-t border-edge" style="background:#080808;">
+  <div class="max-w-6xl mx-auto px-6 md:px-16 pt-24 pb-28">
+
+    <SectionLabel label={labelText} />
+    <h2 class="font-heading leading-none mb-12" style="font-size: clamp(2.8rem, 5.5vw, 4.8rem);">
+      {heading}
+    </h2>
+
+    <!-- Featured -->
+    <div class="vid-card vid-card--featured mb-4" data-id={featured.id}>
+      <div class="vid-thumb-wrap">
+        <img
+          src={`https://img.youtube.com/vi/${featured.id}/maxresdefault.jpg`}
+          alt={featured.title}
+          class="vid-img"
+        />
+        <div class="vid-overlay"></div>
+        <!-- Title overlaid on the featured card -->
+        <div class="vid-featured-label">
+          <span class="font-mono text-[0.5rem] tracking-[0.2em] uppercase" style="color:#ff1493;">
+            {lang === 'fr' ? 'En vedette' : 'Featured'}
+          </span>
+          <h3 class="font-heading text-white leading-none mt-1" style="font-size:clamp(1.4rem,3vw,2.2rem);">
+            {featured.title}
+          </h3>
+          <p class="font-mono text-white/40 mt-1" style="font-size:0.5rem;letter-spacing:0.15em;text-transform:uppercase;">
+            {featured.tag}
+          </p>
+        </div>
+        <button class="vid-play" aria-label={`Play ${featured.title}`}>
+          <svg viewBox="0 0 24 24" fill="currentColor" width="26" height="26"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- 4 smaller cards -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      {rest.map((v) => (
+        <div class="vid-card" data-id={v.id}>
+          <div class="vid-thumb-wrap">
+            <img
+              src={`https://img.youtube.com/vi/${v.id}/hqdefault.jpg`}
+              alt={v.title}
+              class="vid-img"
+              loading="lazy"
+            />
+            <div class="vid-overlay"></div>
+            <button class="vid-play vid-play--sm" aria-label={`Play ${v.title}`}>
+              <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </div>
+          <div class="pt-3">
+            <p class="vid-title">{v.title}</p>
+            <p class="vid-tag">{v.tag}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.vid-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const id = card.dataset.id;
+      if (!id) return;
+      const wrap = card.querySelector<HTMLElement>('.vid-thumb-wrap');
+      if (!wrap) return;
+      const iframe = document.createElement('iframe');
+      iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`;
+      iframe.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:0;';
+      iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+      iframe.allowFullscreen = true;
+      wrap.innerHTML = '';
+      wrap.appendChild(iframe);
+    });
+  });
+</script>
+
+<style>
+  .vid-card { cursor: pointer; }
+
+  .vid-thumb-wrap {
+    position: relative;
+    overflow: hidden;
+    background: #111;
+    aspect-ratio: 16/9;
+  }
+
+  .vid-img {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+    transition: transform 0.4s ease;
+  }
+  .vid-card:hover .vid-img { transform: scale(1.04); }
+
+  .vid-overlay {
+    position: absolute; inset: 0;
+    background: rgba(0,0,0,0.4);
+    transition: background 0.25s;
+  }
+  .vid-card:hover .vid-overlay { background: rgba(0,0,0,0.25); }
+
+  /* Featured: gradient at bottom for the title */
+  .vid-card--featured .vid-overlay {
+    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.1) 55%);
+  }
+  .vid-card--featured:hover .vid-overlay {
+    background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.05) 55%);
+  }
+
+  .vid-featured-label {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 20px 22px;
+    z-index: 2;
+  }
+
+  .vid-play {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 58px; height: 58px; border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    border: 1.5px solid rgba(255,255,255,0.45);
+    color: white;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, transform 0.2s;
+    backdrop-filter: blur(6px);
+    z-index: 3;
+  }
+  .vid-play--sm { width: 42px; height: 42px; }
+
+  .vid-card:hover .vid-play {
+    background: #ff1493;
+    border-color: #ff1493;
+    transform: translate(-50%, -50%) scale(1.06);
+  }
+
+  /* Featured: play button stays top-right, not center */
+  .vid-card--featured .vid-play {
+    top: 22px; left: auto; right: 22px;
+    transform: none;
+    width: 48px; height: 48px;
+  }
+  .vid-card--featured:hover .vid-play {
+    transform: scale(1.06);
+  }
+
+  .vid-title {
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    letter-spacing: 0.04em;
+    color: #e0e0e0;
+    line-height: 1.2;
+  }
+  .vid-tag {
+    font-family: var(--font-mono);
+    font-size: 0.52rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.28);
+    margin-top: 4px;
+  }
+</style>

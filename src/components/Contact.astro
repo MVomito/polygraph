@@ -29,7 +29,7 @@ const tr   = t(lang).contact;
 
       <!-- Form — add data-netlify="true" and name="contact" to wire up Netlify Forms -->
       <form id="contact-form" class="flex flex-col gap-5">
-        <div class="grid grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div class="flex flex-col gap-2">
             <label class="font-mono text-[0.58rem] tracking-[0.15em] uppercase text-dim" for="fname">{tr.form.name}</label>
             <input id="fname" type="text" placeholder={tr.form.namePH} required
