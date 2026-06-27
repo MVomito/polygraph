@@ -8,16 +8,27 @@ const tr   = t(lang).hero;
   id="hero"
   class="relative min-h-screen flex flex-col items-center justify-center text-center overflow-hidden px-6"
 >
+  <!-- Photo bg -->
+  <img
+    src="/hero-bg.jpg"
+    alt=""
+    aria-hidden="true"
+    class="absolute inset-0 w-full h-full object-cover object-center pointer-events-none"
+    style="z-index:0;"
+  />
+  <!-- Dark overlay -->
+  <div class="absolute inset-0 pointer-events-none" style="background: rgba(0,0,0,0.62); z-index:1;"></div>
+
   <!-- Grid bg -->
   <div
     class="absolute inset-0 pointer-events-none"
-    style="background-image: linear-gradient(rgba(255,20,147,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(57,255,20,0.03) 1px, transparent 1px); background-size: 80px 80px;"
+    style="background-image: linear-gradient(rgba(255,20,147,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(57,255,20,0.03) 1px, transparent 1px); background-size: 80px 80px; z-index:2;"
   ></div>
 
   <!-- Radial glow -->
   <div
     class="absolute rounded-full pointer-events-none"
-    style="width:700px; height:700px; background: radial-gradient(circle, rgba(255,20,147,0.12) 0%, rgba(57,255,20,0.04) 60%, transparent 75%); top:50%; left:50%; transform:translate(-50%,-50%);"
+    style="width:700px; height:700px; background: radial-gradient(circle, rgba(255,20,147,0.12) 0%, rgba(57,255,20,0.04) 60%, transparent 75%); top:50%; left:50%; transform:translate(-50%,-50%); z-index:3;"
   ></div>
 
   <p class="relative font-mono text-[0.7rem] tracking-[0.35em] uppercase text-brand mb-6">
